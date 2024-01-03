@@ -30,3 +30,24 @@ If there is no output and the return value is zero, then no JIT coherence violat
     - `-fdic`: Do not explicitly clear I-Cache
 - riscv64
     - `-flocal`: Not use `__clear_cache` from libc and only executes `fence.i` on writer hart
+
+## Some interesting findings:
+
+### AArch64
+
+#### Apple M1
+
+`CTR_EL0.IDC = 0`
+`CTR_EL0.DIC = 0`
+
+`-fdic` will fail. Specifically, `ic, ivau [cacheline_addr]` and `dsb ish` must both exist to make cache coherence.
+
+#### Phytium D2000
+
+`-fdic` will fail. Specifically, `ic, ivau [cacheline_addr]` must exist, `dsb ish` is not required.
+
+### RISC-V 64
+
+#### HiFive Unmatched (Sifive Freedom U740)
+
+`-flocal` will fail.
