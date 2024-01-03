@@ -49,7 +49,9 @@ If there is no output and the return value is zero, then no JIT coherence violat
 
 `CTR_EL0.DIC = 0`
 
-`-fdic` will fail. Specifically, `ic, ivau [cacheline_addr]` must exist, `dsb ish` is not required.
+`-fidc` will fail sometime.
+
+`-fdic` will fail. Specifically, `ic, ivau [cacheline_addr]` must exist, `dsb ish` seems not required.
 
 ### RISC-V 64
 
