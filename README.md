@@ -37,12 +37,17 @@ If there is no output and the return value is zero, then no JIT coherence violat
 
 #### Apple M1
 
-`CTR_EL0.IDC = 0`
+`CTR_EL0.IDC = 1`
+
 `CTR_EL0.DIC = 0`
 
 `-fdic` will fail. Specifically, `ic, ivau [cacheline_addr]` and `dsb ish` must both exist to make cache coherence.
 
 #### Phytium D2000
+
+`CTR_EL0.IDC = 0`
+
+`CTR_EL0.DIC = 0`
 
 `-fdic` will fail. Specifically, `ic, ivau [cacheline_addr]` must exist, `dsb ish` is not required.
 
