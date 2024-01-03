@@ -11,6 +11,7 @@ You can also try some ISA-dependent options to see what will happen if the defau
 ## Usage:
 
 ```console
+make
 ./test <number_of_loops=100> <ISA-dependent options>
 ```
 
@@ -19,6 +20,8 @@ To see what will happen if force enables DIC on aarch64, you can:
 ```console
 ./test 10000 -fdic
 ```
+
+If there is no output and the return value is zero, then no JIT coherence violation happens.
 
 ## Supported ISA and ISA-dependent options
 
