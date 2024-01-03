@@ -4,9 +4,9 @@ Understand microarchitecture features of I-D Coherence.
 
 ## How does it work?
 
-This program will generate jitted instructions with a random immediate number and store the number to a pointer which points to a global variable. Then create a separate thread to execute the jitted instructions continuously and controlled by a shared variable as start and stop signals. When the thread raised a finished signal with a different result value, the JIT coherence is corrupted.
+This program will generate JIT-compiled instructions with a random immediate number and store the number in a pointer that points to a global variable. Then the program creates a separate thread to execute the JIT-compiled instructions continuously and controlled by a shared variable as start and stop signals. The main thread will generate a new random number and sign the separate thread to execute over and over again. When the thread raises a finished signal with a different result value stored in that global variable, it signs the JIT coherence is corrupted.
 
-You can also try some ISA-dependent options to see what will happen if the default cache clean procedures change and then violate JIT coherence.
+You can also try some ISA-dependent options to see what will happen if the default cache clean procedures changes and JIT coherence is corrupted.
 
 ## Usage:
 
