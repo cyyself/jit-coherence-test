@@ -75,9 +75,9 @@ void my_cache_flush(void *base, void *end) {
     asm volatile("isb" : : : "memory");
 #elif defined(__riscv) and __riscv_xlen == 64
     if (riscv_local_only) asm volatile("fence.i");
-    else __clear_cache(base, end);
+    else __builtin___clear_cache(base, end);
 #else
-    __clear_cache(base, end);
+    __builtin___clear_cache(base, end);
 #endif
 }
 
