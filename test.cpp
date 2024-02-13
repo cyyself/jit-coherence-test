@@ -116,10 +116,10 @@ void generate_set_value(int x, int *place) {
 
 std::atomic<bool> start_sign;
 std::atomic<bool> finish_sign;
-int test;
+uint64_t test;
 bool wxorx;
 
-void exec(void(*instr)(int *x, int y)) {
+void exec(void(*instr)(uint64_t *x, uint64_t y)) {
     while (true) {
         if (start_sign.load(ORDER)) {
             start_sign.store(false, ORDER);
@@ -166,7 +166,7 @@ int main(int argc, char *argv[]) {
 
     std::mt19937 rng;
 
-    std::thread t1(exec, (void(*)(int *x, int y))addr);
+    std::thread t1(exec, (void(*)(uint64_t *x, uint64_t y))addr);
     t1.detach();
 
     int res = 0;
