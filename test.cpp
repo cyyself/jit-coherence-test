@@ -6,6 +6,7 @@
 #include <random>
 #include <thread>
 #include <atomic>
+#include <cassert>
 
 #define PAGESIZE 16384
 
@@ -116,6 +117,7 @@ void generate_set_value(int x, int *place) {
 std::atomic<bool> start_sign;
 std::atomic<bool> finish_sign;
 int test;
+bool wxorx;
 
 void exec(void(*instr)(int *x, int y)) {
     while (true) {
@@ -146,11 +148,16 @@ void init_cache_info(int argc, char *argv[]) {
         }
     }
 #endif
+    for (int i=1; i<argc; i++) {
+        if (strcmp(argv[i], "-wxorx") == 0) {
+            wxorx = true;
+        }
+    }
 }
 int main(int argc, char *argv[]) {
     init_cache_info(argc, argv);
 
-    void* addr = mmap(NULL, PAGESIZE, PROT_READ | PROT_WRITE | PROT_EXEC, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+    void* addr = mmap(NULL, PAGESIZE, PROT_READ | PROT_WRITE | (wxorx ? 0 : PROT_EXEC), MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 
     if (addr == NULL) {
         printf("mmap faild!\n");
@@ -169,7 +176,9 @@ int main(int argc, char *argv[]) {
 
     for (int i=0; i<loop_len; i++) {
         int rng_res = rng() % 2048;
+        if (wxorx) assert(mprotect(addr, PAGESIZE, PROT_READ | PROT_WRITE) == 0);
         generate_set_value(rng_res, (int*)addr);
+        if (wxorx) assert(mprotect(addr, PAGESIZE, PROT_READ | PROT_EXEC) == 0);
         start_sign.store(true, ORDER);
         while (finish_sign.load(ORDER) == false);
         if (rng_res != test) {
