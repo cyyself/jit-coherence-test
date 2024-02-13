@@ -99,6 +99,15 @@ void generate_set_value(int x, int *place) {
     instr[0] |= (x & 0xfff) << 10;
     memcpy(place, instr, sizeof(instr));
     my_cache_flush(place, place + sizeof(instr));
+#elif defined(__x86_64)
+    uint8_t instr[11] = {
+        0x48, 0x81, 0xc6, 0x00, 0x00, 0x00, 0x00, // add rsi, 0
+        0x48, 0x89, 0x37, // mov [rdi], rsi
+        0xc3 // ret
+    };
+    *(uint16_t*)(instr + 3) = x;
+    memcpy(place, instr, sizeof(instr));
+    my_cache_flush(place, place + sizeof(instr));
 #else
     #error "Unsupported ISA"
 #endif
