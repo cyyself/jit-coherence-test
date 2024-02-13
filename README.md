@@ -14,7 +14,7 @@ You can also try some ISA-dependent options to see what will happen if the defau
 
 ```console
 make
-./test <number_of_loops=100> <ISA-dependent options>
+./test <number_of_loops=100> <options>
 ```
 
 To see what will happen if force enables DIC on aarch64, you can:
@@ -24,6 +24,10 @@ To see what will happen if force enables DIC on aarch64, you can:
 ```
 
 If there is no output and the return value is zero, then no JIT coherence violation happens.
+
+## Options
+
+- `-wxorx` Using W xor X for page table
 
 ## Supported ISA and ISA-dependent options
 
